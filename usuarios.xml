@@ -1,13 +1,29 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <usuarios>
+        
     <usuario>
+                
         <username>Fernanda</username>
+                
         <password>123</password>
+                
         <rol>Administrador</rol>
+            
     </usuario>
+        
     <usuario>
+                
         <username>ff</username>
+                
         <password>1</password>
+                
+        <rol>Administrador</rol>
+            
+    </usuario>
+    
+    <usuario>
+        <username>prueba</username>
+        <password>00</password>
         <rol>Administrador</rol>
     </usuario>
 </usuarios>
