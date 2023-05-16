@@ -52,6 +52,26 @@ public class ArbolBinarioBusqueda {
         }
     }
 
+    public NodoArbol getRaiz() {
+        return raiz;
+    }
+
+    public Usuario buscar(NodoArbol nodo, String usuario) {
+        if (nodo == null) {
+            return null;
+        }
+
+        if (usuario.equals(nodo.usuario.getUsername())){
+            return nodo.usuario;
+        }
+
+        if (nodo.usuario.getUsername().compareTo(usuario) > 0) {
+            return buscar(nodo.izquierdo, usuario);
+        } else {
+            return buscar(nodo.derecho, usuario);
+        }
+    }
+
     private class NodoArbol {
         private Usuario usuario;
         private NodoArbol izquierdo;

@@ -142,10 +142,38 @@ public class Server {
             } if (mensaje.equals("agregarAdmin")) {
                 nuevoAdmi();
             }
+            if (mensaje.equals("validarUsuario")){
+                findUser();
+            }
+            if (mensaje.equals("editUser")){
+                editUsuer();
+            }
 
 
 
         }
+    }
+
+    private static void findUser() throws IOException, ClassNotFoundException {
+        String username = (String) in.readObject();
+        Usuario user = arbolUsuarios.buscar(arbolUsuarios.getRaiz(), username);
+        if (user != null){
+            out.writeObject(true);
+            out.writeObject(user.getUsername());
+            out.writeObject(user.getPassword());
+            out.writeObject(user.getRol());
+            System.out.println(user.getUsername());
+        }else{
+            out.writeObject(false);
+            System.out.println("No existe >:(");
+        }
+    }
+    private static void editUsuer() throws IOException, ClassNotFoundException {
+        Usuario usertemp = arbolUsuarios.buscar(arbolUsuarios.getRaiz(), "Fernanda");
+        usertemp.setUsername((String) in.readObject());
+        usertemp.setPassword((String) in.readObject());
+        usertemp.setRol((String) in.readObject());
+        System.out.println("done");
     }
 
     private static void nuevoAdmi() throws IOException, ClassNotFoundException {
