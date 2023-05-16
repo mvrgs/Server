@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<usuarios>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><usuarios>
                 
     
     
@@ -67,10 +66,5 @@
         <rol>Administrador</rol>
             
     </usuario>
-    
-    <usuario>
-        <username>Alejandro</username>
-        <password>123</password>
-        <rol>Administrador</rol>
-    </usuario>
+
 </usuarios>

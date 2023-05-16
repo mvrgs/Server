@@ -6,14 +6,20 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathConstants;
+import javax.xml.xpath.XPathFactory;
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -169,7 +175,7 @@ public class Server {
                 editUsuer();
             }
             if (mensaje.equals("deleteUser")) {
-                deletetUsuer();
+                deletetUser();
             }
         }
     }
@@ -179,6 +185,7 @@ public class Server {
      * @throws IOException
      * @throws ClassNotFoundException
      */
+    /*
     private static void deletetUsuer() throws IOException, ClassNotFoundException {
         boolean ready = arbolUsuarios.eliminar("Alejandro");
         if(ready){
@@ -190,6 +197,8 @@ public class Server {
 
 
     }
+
+     */
 
     /**
      * Función con Socket para buscar un Usuario del Árbol Binario de Búsqueda
@@ -291,6 +300,54 @@ public class Server {
         StreamResult result = new StreamResult(new FileOutputStream(nombreArchivo));
         transformer.transform(source, result);
     }
+    private static void deletetUser() throws IOException, ClassNotFoundException {
+        String usuario = "Alejandro";
+
+        try {
+            removeUserByUsername("usuarios.xml", usuario);
+            out.writeObject("Administrador eliminado con éxito");
+        } catch (Exception e) {
+            out.writeObject("Error al eliminar el administrador");
+        }
+    }
+    public static void removeUserByUsername(String filePath, String username) {
+        try {
+            // Crear una instancia del DocumentBuilderFactory
+            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+
+            // Crear un objeto DocumentBuilder a partir del DocumentBuilderFactory
+            DocumentBuilder builder = factory.newDocumentBuilder();
+
+            // Parsear el archivo XML y obtener el objeto Document
+            Document doc = builder.parse(new File(filePath));
+
+            // Obtener todos los elementos "user" en el archivo XML
+            NodeList userList = doc.getElementsByTagName("usuario");
+
+            // Recorrer la lista de usuarios y buscar el usuario con el "username" especificado
+            for (int i = 0; i < userList.getLength(); i++) {
+                Element userElement = (Element) userList.item(i);
+                String userUsername = userElement.getAttribute("usuario");
+                if (username.equals(userUsername)) {
+                    // Eliminar el nodo "user" encontrado
+                    userElement.getParentNode().removeChild(userElement);
+                    System.out.println("Usuario eliminado exitosamente del archivo XML.");
+                    break;
+                }
+            }
+
+            // Guardar los cambios en el archivo XML
+            TransformerFactory transformerFactory = TransformerFactory.newInstance();
+            Transformer transformer = transformerFactory.newTransformer();
+            DOMSource source = new DOMSource(doc);
+            StreamResult result = new StreamResult(new File(filePath));
+            transformer.transform(source, result);
+
+        } catch (ParserConfigurationException | IOException | SAXException | TransformerException e) {
+            e.printStackTrace();
+        }
+    }
+
 
     /**
      * Función para iniciar la sesión
