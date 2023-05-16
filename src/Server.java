@@ -29,8 +29,10 @@ public class Server {
     static ObjectInputStream in;
 
 
-
-
+    /**
+     * Función para cargar el XML de los clientes
+     * @param nombreArchivo
+     */
     private static void cargarClientes(String nombreArchivo) {
         try {
             DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
@@ -55,6 +57,11 @@ public class Server {
             e.printStackTrace();
         }
     }
+
+    /**
+     * Función para cargar el XML de los Usuarios
+     * @param nombreArchivo
+     */
     private static void cargarUsuarios(String nombreArchivo) {
         try {
             DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
@@ -79,6 +86,11 @@ public class Server {
             e.printStackTrace();
         }
     }
+
+    /**
+     * Función para cargar el archivo JSon de los platillos
+     * @param nombreArchivo
+     */
     private static void cargarPlatillos(String nombreArchivo) {
         try {
             JSONParser parser = new JSONParser();
@@ -124,6 +136,13 @@ public class Server {
         }
 
     }
+
+    /**
+     * Función para utilizar los sockets para enviar y recibir mensajes
+     * @param args
+     * @throws IOException
+     * @throws ClassNotFoundException
+     */
     public static void main(String[] args) throws IOException, ClassNotFoundException {
         cargarClientes("clientes.xml");
         cargarUsuarios("usuarios.xml");
@@ -139,21 +158,44 @@ public class Server {
 
             if (mensaje.equals("validarLogin")) {
                 inicioSesion();
-            } if (mensaje.equals("agregarAdmin")) {
+            }
+            if (mensaje.equals("agregarAdmin")) {
                 nuevoAdmi();
             }
-            if (mensaje.equals("validarUsuario")){
+            if (mensaje.equals("validarUsuario")) {
                 findUser();
             }
-            if (mensaje.equals("editUser")){
+            if (mensaje.equals("editUser")) {
                 editUsuer();
             }
-
-
-
+            if (mensaje.equals("deleteUser")) {
+                deletetUsuer();
+            }
         }
     }
 
+    /**
+     * Función con Socket para eliminar un Usuario del Árbol Binario de Búsqueda
+     * @throws IOException
+     * @throws ClassNotFoundException
+     */
+    private static void deletetUsuer() throws IOException, ClassNotFoundException {
+        boolean ready = arbolUsuarios.eliminar("Alejandro");
+        if(ready){
+            System.out.println("Done: The user was deleted");
+            out.writeObject(ready);
+        }else{
+            System.out.println("No se eliminó :(");
+        }
+
+
+    }
+
+    /**
+     * Función con Socket para buscar un Usuario del Árbol Binario de Búsqueda
+     * @throws IOException
+     * @throws ClassNotFoundException
+     */
     private static void findUser() throws IOException, ClassNotFoundException {
         String username = (String) in.readObject();
         Usuario user = arbolUsuarios.buscar(arbolUsuarios.getRaiz(), username);
@@ -168,14 +210,26 @@ public class Server {
             System.out.println("No existe >:(");
         }
     }
+
+    /**
+     * Función con Socket para editar un Usuario del Árbol Binario de Búsqueda
+     * @throws IOException
+     * @throws ClassNotFoundException
+     */
     private static void editUsuer() throws IOException, ClassNotFoundException {
         Usuario usertemp = arbolUsuarios.buscar(arbolUsuarios.getRaiz(), "Fernanda");
         usertemp.setUsername((String) in.readObject());
         usertemp.setPassword((String) in.readObject());
         usertemp.setRol((String) in.readObject());
+        out.writeObject(true);
         System.out.println("done");
     }
 
+    /**
+     * Función para crear un nuevo admin
+     * @throws IOException
+     * @throws ClassNotFoundException
+     */
     private static void nuevoAdmi() throws IOException, ClassNotFoundException {
         String newUsuario = (String) in.readObject();
         String newPassword = (String) in.readObject();
@@ -184,17 +238,24 @@ public class Server {
         usuario.setUsername(newUsuario);
         usuario.setPassword(newPassword);
         usuario.setRol("Administrador");
-        System.out.println(newUsuario);
-        System.out.println(newPassword);
+
 
         try {
             agregarUsuarioAXML("usuarios.xml", usuario);
             out.writeObject("Administrador agregado con éxito");
+            System.out.println(newUsuario);
+            System.out.println(newPassword);
         } catch (Exception e) {
             out.writeObject("Error al agregar el administrador");
         }
     }
 
+    /**
+     * Función para agregar usuarios al XML
+     * @param nombreArchivo
+     * @param usuario
+     * @throws Exception
+     */
     public static void agregarUsuarioAXML(String nombreArchivo, Usuario usuario) throws Exception {
         // Crear una fábrica de constructores de documentos
         DocumentBuilderFactory docBuilderFactory = DocumentBuilderFactory.newInstance();
@@ -231,6 +292,11 @@ public class Server {
         transformer.transform(source, result);
     }
 
+    /**
+     * Función para iniciar la sesión
+     * @throws IOException
+     * @throws ClassNotFoundException
+     */
     private static void inicioSesion() throws IOException, ClassNotFoundException {
         String usernameIn= (String) in.readObject();
         String passwordIn = (String) in.readObject();

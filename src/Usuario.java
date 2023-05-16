@@ -6,13 +6,18 @@ public class Usuario {
 
     public Usuario() {
     }
-
+    /**
+     * Constructor de la clase Usuario
+     */
     public Usuario(String username, String password, String rol) {
         this.username = username;
         this.password = password;
         this.rol = rol;
     }
 
+    /**
+     * Getters y setters
+     */
     public String getUsername() {
         return username;
     }

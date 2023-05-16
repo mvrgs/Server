@@ -1,4 +1,7 @@
 public class ArbolAVL {
+    /**
+     * Constructor de la clase node
+     */
     private class Node {
         Platillos value;
         Node left;
@@ -13,6 +16,10 @@ public class ArbolAVL {
 
     private Node root;
 
+    /**
+     * Función para insertar un platillo
+     * @param value
+     */
     public void insert(Platillos value) {
         root = insert(root, value);
     }
@@ -55,6 +62,11 @@ public class ArbolAVL {
         return node;
     }
 
+    /**
+     * Función para obtener la altura del árbol
+     * @param node
+     * @return
+     */
     private int height(Node node) {
         if (node == null) {
             return 0;
@@ -62,6 +74,11 @@ public class ArbolAVL {
         return node.height;
     }
 
+    /**
+     * Función para obtener el balance del árbol
+     * @param node
+     * @return
+     */
     private int getBalance(Node node) {
         if (node == null) {
             return 0;
@@ -69,6 +86,11 @@ public class ArbolAVL {
         return height(node.left) - height(node.right);
     }
 
+    /**
+     * Función para la rotación a la derecha de los subárboles
+     * @param y
+     * @return
+     */
     private Node rightRotate(Node y) {
         Node x = y.left;
         Node t2 = x.right;
@@ -82,6 +104,11 @@ public class ArbolAVL {
         return x;
     }
 
+    /**
+     * Función para la rotación a la izquierda de los subárboles
+     * @param x
+     * @return
+     */
     private Node leftRotate(Node x) {
         Node y = x.right;
         Node t2 = y.left;

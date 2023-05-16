@@ -1,11 +1,16 @@
 public class Platillos {
+    /**
+     * Clase platillos
+     */
     String nombre;
     Integer calorias;
     Integer tiempo;
     Integer precio;
     Integer id = 0;
 
-
+    /**
+     * Getters y setters
+     */
     public String getNombre() {
         return nombre;
     }
