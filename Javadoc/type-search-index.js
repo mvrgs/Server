@@ -1,0 +1,1 @@
+typeSearchIndex = [{"l":"All Classes and Interfaces","u":"allclasses-index.html"},{"p":"<Unnamed>","l":"ArbolAVL"},{"p":"<Unnamed>","l":"ArbolBinarioBusqueda"},{"p":"<Unnamed>","l":"arduinoComm"},{"p":"<Unnamed>","l":"JSONController"},{"p":"<Unnamed>","l":"Platillos"},{"p":"<Unnamed>","l":"Server"},{"p":"<Unnamed>","l":"Usuario"}];updateSearchResults();
