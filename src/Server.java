@@ -177,16 +177,38 @@ public class Server {
             if (mensaje.equals("deleteUser")) {
                 deletetUser();
             }
+            /*
+            if(mensaje.equals("buscarPlatillo")){
+                buscarPlatillo();
+            }
+
+             */
+        }
+    }
+    /*
+    public void buscarPlatillo() throws IOException, ClassNotFoundException {
+        String username = (String) in.readObject();
+        Usuario user = arbolPlatillos.buscar(arbolPlatillos.)
+        if (user != null){
+            out.writeObject(true);
+            out.writeObject(user.getUsername());
+            out.writeObject(user.getPassword());
+            out.writeObject(user.getRol());
+            System.out.println(user.getUsername());
+        }else{
+            out.writeObject(false);
+            System.out.println("No existe >:(");
         }
     }
 
+     */
     /**
      * Función con Socket para eliminar un Usuario del Árbol Binario de Búsqueda
      * @throws IOException
      * @throws ClassNotFoundException
      */
-    /*
-    private static void deletetUsuer() throws IOException, ClassNotFoundException {
+
+    private static void deletetUser() throws IOException, ClassNotFoundException {
         boolean ready = arbolUsuarios.eliminar("Alejandro");
         if(ready){
             System.out.println("Done: The user was deleted");
@@ -198,7 +220,7 @@ public class Server {
 
     }
 
-     */
+
 
     /**
      * Función con Socket para buscar un Usuario del Árbol Binario de Búsqueda
@@ -300,6 +322,7 @@ public class Server {
         StreamResult result = new StreamResult(new FileOutputStream(nombreArchivo));
         transformer.transform(source, result);
     }
+    /*
     private static void deletetUser() throws IOException, ClassNotFoundException {
         String usuario = "Alejandro";
 
@@ -310,6 +333,7 @@ public class Server {
             out.writeObject("Error al eliminar el administrador");
         }
     }
+
     public static void removeUserByUsername(String filePath, String username) {
         try {
             // Crear una instancia del DocumentBuilderFactory
@@ -347,6 +371,8 @@ public class Server {
             e.printStackTrace();
         }
     }
+
+     */
 
 
     /**

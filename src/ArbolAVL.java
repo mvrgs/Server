@@ -13,7 +13,21 @@ public class ArbolAVL {
             height = 1;
         }
     }
+    public Platillos buscar(Node nodo, String usuario) {
+        if (nodo == null) {
+            return null;
+        }
 
+        if (usuario.equals(nodo.value.getNombre())){
+            return nodo.value;
+        }
+
+        if (nodo.value.getNombre().compareTo(usuario) > 0) {
+            return buscar(nodo.left, usuario);
+        } else {
+            return buscar(nodo.right, usuario);
+        }
+    }
     private Node root;
 
     /**
