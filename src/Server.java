@@ -33,10 +33,11 @@ public class Server {
     static Socket clientSocket;
     static ObjectOutputStream out;
     static ObjectInputStream in;
+    private static JSONController jsonController = new JSONController();
 
 
     /**
-     * Función para cargar el XML de los clientes
+     * Función para cargar el XML de los clientes y crear el arbol binario de busqueda
      * @param nombreArchivo
      */
     private static void cargarClientes(String nombreArchivo) {
@@ -65,7 +66,7 @@ public class Server {
     }
 
     /**
-     * Función para cargar el XML de los Usuarios
+     * Función para cargar el XML de los Usuarios administradores y crear el arbol binario de busqueda
      * @param nombreArchivo
      */
     private static void cargarUsuarios(String nombreArchivo) {
@@ -94,7 +95,7 @@ public class Server {
     }
 
     /**
-     * Función para cargar el archivo JSon de los platillos
+     * Función para cargar el archivo JSon de los platillos y crear el arbolAVL
      * @param nombreArchivo
      */
     private static void cargarPlatillos(String nombreArchivo) {
@@ -167,6 +168,8 @@ public class Server {
             }
             if (mensaje.equals("agregarAdmin")) {
                 nuevoAdmi();
+            } if (mensaje.equals("agregarPlatillo")){
+                nuevoPlatillo();
             }
             if (mensaje.equals("validarUsuario")) {
                 findUser();
@@ -202,6 +205,30 @@ public class Server {
     }
 
      */
+
+    /**
+     * Recibe la informacion de MasterApp y la procesa creando un nuevo objeto de tipo Platillo,
+     * para luego agregarlo al json
+     * @throws IOException
+     * @throws ClassNotFoundException
+     */
+    private static void nuevoPlatillo() throws IOException, ClassNotFoundException {
+        String newNombre = (String) in.readObject();
+        Integer newCalorias = (Integer) in.readObject();
+        Integer newTiempo = (Integer) in.readObject();
+        Integer newPrecio = (Integer) in.readObject();
+
+        Platillos platillos = new Platillos();
+        platillos.setNombre(newNombre);
+        platillos.setCalorias(newCalorias);
+        platillos.setTiempo(newTiempo);
+        platillos.setPrecio(newPrecio);
+
+        jsonController.saveJson(platillos.getNombre(), platillos.getCalorias(), platillos.getTiempo(), platillos.getPrecio());
+
+    }
+
+
     /**
      * Función con Socket para eliminar un Usuario del Árbol Binario de Búsqueda
      * @throws IOException
@@ -257,7 +284,7 @@ public class Server {
     }
 
     /**
-     * Función para crear un nuevo admin
+     * Función para crear un nuevo admin con la informacion recibida de MasterApp para agregarlo al archivo XML
      * @throws IOException
      * @throws ClassNotFoundException
      */
@@ -376,7 +403,7 @@ public class Server {
 
 
     /**
-     * Función para iniciar la sesión
+     * Función para verificar que la informacion ingresada es existente en alguno de los arboles binarios de busqueda
      * @throws IOException
      * @throws ClassNotFoundException
      */
